@@ -1,12 +1,18 @@
 "use client";
 
 import { theme } from "@/constants/theme";
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import "./global.css";
 
 export default function WithMuiTheme({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {children}
+    </ThemeProvider>
+  );
 }

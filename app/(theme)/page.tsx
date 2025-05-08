@@ -1,6 +1,5 @@
-import { theme } from "@/constants/theme";
-import { Button, Grid, ThemeProvider } from "@mui/material";
+import { Button } from "@mui/material";
 
-export default function Test() {
+export default function Home() {
   return <Button>hello</Button>;
 }
