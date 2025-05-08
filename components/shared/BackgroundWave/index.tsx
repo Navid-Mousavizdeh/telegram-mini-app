@@ -31,36 +31,6 @@ export default function BackgroundWave() {
             }}
           />
         </WaveContainer>
-
-        {/* Second layered wave */}
-        <WaveContainer>
-          <Wave
-            fill={`${theme.palette.primary.main}20`}
-            paused={false}
-            style={{ display: "flex" }}
-            options={{
-              height: 30,
-              amplitude: 15,
-              speed: 0.2,
-              points: 6,
-            }}
-          />
-        </WaveContainer>
-        {/* Base wave */}
-        <WaveContainer>
-          {" "}
-          <Wave
-            fill={`${theme.palette.primary.main}10`}
-            paused={false}
-            style={{ display: "flex" }}
-            options={{
-              height: 30,
-              amplitude: 20,
-              speed: 0.15,
-              points: 3,
-            }}
-          />
-        </WaveContainer>
       </Box>
     </Box>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/lib/authentication";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function SignUpPage() {
+  const { signup } = useAuth();
   const router = useRouter();
   const {
     register,
@@ -25,13 +27,17 @@ export default function SignUpPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
+      await signup(data.username, data.password);
     } catch {
-      alert("Login failed");
+      alert("Signup failed");
     }
   };
 
   return (
-    <Box>
+    <Box sx={{ textAlign: "center" }}>
+      <Typography variant="h4" gutterBottom>
+        Sign-up
+      </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           label="Username"

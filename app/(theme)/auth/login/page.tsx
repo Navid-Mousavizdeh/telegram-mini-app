@@ -1,10 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import TelegramIcon from "@mui/icons-material/Telegram";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useAuth } from "@/lib/authentication";
 
 const schema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -14,6 +16,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function LoginPage() {
+  const { login } = useAuth();
   const router = useRouter();
   const {
     register,
@@ -25,6 +28,7 @@ export default function LoginPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
+      await login(data.username, data.password);
     } catch {
       alert("Login failed");
     }
@@ -32,14 +36,8 @@ export default function LoginPage() {
 
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h5" gutterBottom>
-        Welcome to Submission App
-      </Typography>
-      <Button variant="outlined" fullWidth sx={{ mt: 2, mb: 2 }}>
-        Login with Telegram
-      </Button>
-      <Typography variant="subtitle1" gutterBottom>
-        Admin Login
+      <Typography variant="h4" gutterBottom>
+        Login
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
@@ -60,17 +58,21 @@ export default function LoginPage() {
           helperText={errors.password?.message}
         />
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-          Login as Admin
-        </Button>
-        <Button
-          variant="text"
-          fullWidth
-          sx={{ mt: 1 }}
-          onClick={() => router.push("/auth/signup")}
-        >
-          Already have an account? Login
+          Login
         </Button>
       </form>
+      <Divider sx={{ mt: 3, mb: 3 }}>OR</Divider>
+      <Button variant="outlined" fullWidth startIcon={<TelegramIcon />}>
+        Login with Telegram
+      </Button>
+      <Button
+        variant="text"
+        fullWidth
+        sx={{ mt: 3 }}
+        onClick={() => router.push("/auth/signup")}
+      >
+        Don't have an account? Signup
+      </Button>
     </Box>
   );
 }
