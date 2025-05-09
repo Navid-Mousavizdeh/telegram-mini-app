@@ -1,3 +1,3 @@
-import { fadeInSlideUp, SlideUp } from "./fadeInSlideUp";
+import { fadeInSlideUp, slideUp } from "./fadeInSlideUp";
 
-export { fadeInSlideUp, SlideUp };
+export { fadeInSlideUp, slideUp };
