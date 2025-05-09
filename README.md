@@ -5,7 +5,7 @@ A Next.js-based application mimicking a simplified version of Telegram, allowing
 ## Features
 - **Form Handling**: Submit messages with fields for title, description, category, and image URL, managed with React-Hook-Form and validated using Zod.
 - **Data Display**: View all submitted messages in a responsive table with pagination.
-- **Authentication**: Basic JWT-based login/signup system.
+- **Authentication**: Basic JWT-based login/signup system. (admin credentials -> username: admin | password: admin)
 - **Real-Time Updates**: New submissions are reflected in real-time using React Query.
 - **Backend**: Next.js API routes handle form submissions and data retrieval, with data stored in a MongoDB.
 - **Role-Based Access**: Admin users can view all messages; regular users can only submit and view.
