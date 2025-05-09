@@ -48,17 +48,6 @@ export default function SubmissionsPage() {
     }
   }, [user, authLoading, router]); // Ensure this effect only runs when the user state changes
 
-  // Handle the loading state
-  if (isLoading) {
-    return (
-      <Container>
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <CircularProgress />
-        </Box>
-      </Container>
-    );
-  }
-
   return (
     <Container>
       <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>

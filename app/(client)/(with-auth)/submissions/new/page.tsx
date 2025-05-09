@@ -44,18 +44,6 @@ export default function NewSubmissionPage() {
     resolver: zodResolver(schema),
   });
 
-  // If authentication is loading, show a loading spinner
-  if (authLoading) {
-    return (
-      <Container>
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <CircularProgress />
-        </Box>
-      </Container>
-    );
-  }
-
-  // Redirect to login page if the user is not authenticated
   useEffect(() => {
     if (!authLoading) {
       if (!user) {
@@ -67,12 +55,6 @@ export default function NewSubmissionPage() {
     }
   }, [authLoading, user, router]);
 
-  // If authentication fails, don't render the form
-  if (isAuthenticated === false) {
-    return null; // or you could show a loading message or fallback UI
-  }
-
-  // Mutate for new submission using React Query
   const mutation = useMutation<void, Error, FormData>({
     mutationFn: async (data: FormData) => {
       await axios.post("/api/submissions", data, {
