@@ -43,7 +43,7 @@ export default function WaveLayout({
       >
         <Box
           sx={{
-            width: { xs: "100%", md: "50%" },
+            width: { xs: "100%", md: "70%" },
             height: { xs: "100%", md: "90%" },
             zIndex: 10,
             display: "flex",
@@ -79,9 +79,9 @@ export default function WaveLayout({
                 height: "100%",
                 zIndex: 10,
                 display: "flex",
-                alignItems: "center",
                 justifyContent: "center",
                 position: "relative",
+                overflowY: "auto",
               }}
             >
               {children}

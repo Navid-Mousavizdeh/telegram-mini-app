@@ -16,9 +16,10 @@ export async function POST(request: NextRequest) {
       { username: user.username, role: user.role },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as { message: string };
     return NextResponse.json(
-      { error: error.message || "Failed to create user" },
+      { error: err.message || "Failed to create user" },
       { status: 400 }
     );
   } finally {

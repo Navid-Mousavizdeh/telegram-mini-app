@@ -1,8 +1,7 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { Submission, User } from "@/types";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
-import { Submission, User } from "@/types";
+import { MongoClient, ObjectId } from "mongodb";
 
 const MONGODB_URI = process.env.MONGODB_URI || "";
 const JWT_SECRET = process.env.JWT_SECRET || "";
@@ -85,6 +84,17 @@ class MongoDatabase {
       return submissions.find().toArray();
     }
     return submissions.find({ userId: user._id.toString() }).toArray();
+  }
+
+  async getSubmissionsPaginated(user: User, skip: number, limit: number) {
+    const db = this.client.db(this.dbName);
+    const query = user.role === "admin" ? {} : { userId: user._id.toString() };
+    return db
+      .collection<Submission>("submissions")
+      .find(query)
+      .skip(skip)
+      .limit(limit)
+      .toArray();
   }
 
   async getSubmissionById(id: string, user: User): Promise<Submission | null> {

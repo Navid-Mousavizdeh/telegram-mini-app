@@ -71,7 +71,7 @@ export default function LoginPage() {
         sx={{ mt: 3 }}
         onClick={() => router.push("/auth/signup")}
       >
-        Don't have an account? Signup
+        Don&apos;t have an account? Signup
       </Button>
     </Box>
   );
