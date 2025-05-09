@@ -87,6 +87,17 @@ class MongoDatabase {
     return submissions.find({ userId: user._id.toString() }).toArray();
   }
 
+  async getSubmissionsPaginated(user: User, skip: number, limit: number) {
+    const db = this.client.db(this.dbName);
+    const query = user.role === "admin" ? {} : { userId: user._id.toString() };
+    return db
+      .collection<Submission>("submissions")
+      .find(query)
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+  }
+
   async getSubmissionById(id: string, user: User): Promise<Submission | null> {
     const submissions = this.getSubmissionsCollection();
     return submissions.findOne({

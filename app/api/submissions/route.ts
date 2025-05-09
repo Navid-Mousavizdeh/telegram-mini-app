@@ -13,11 +13,22 @@ export async function GET(request: NextRequest) {
     if (!user.id || !user.username || !user.role) {
       return NextResponse.json({ error: "Invalid user data" }, { status: 401 });
     }
-    const submissions = await database.getSubmissions({
-      _id: new ObjectId(user.id),
-      username: user.username,
-      role: user.role as "admin" | "regular",
-    });
+
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const skip = (page - 1) * limit;
+
+    const submissions = await database.getSubmissionsPaginated(
+      {
+        _id: new ObjectId(user.id),
+        username: user.username,
+        role: user.role as "admin" | "regular",
+      },
+      skip,
+      limit
+    );
+
     return NextResponse.json(submissions);
   } catch {
     return NextResponse.json(
