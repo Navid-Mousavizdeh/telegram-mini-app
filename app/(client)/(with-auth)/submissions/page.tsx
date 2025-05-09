@@ -24,6 +24,8 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
@@ -61,8 +63,9 @@ export default function SubmissionsPage() {
   const { user, isLoading: authLoading, logout } = useAuth();
   const router = useRouter();
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
-
+  const [loadedImage, setLoadedImage] = useState<string | null>(null);
   const PAGE_SIZE = 5;
 
   const { ref, inView } = useInView();
@@ -109,9 +112,20 @@ export default function SubmissionsPage() {
     setExpandedRow((prev) => (prev === id ? null : id));
   };
 
+  const handleCollapseEntered = (submissionId: string) => {
+    setLoadedImage(submissionId);
+  };
+
   return (
     <Container>
-      <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
+      <Box
+        sx={{
+          mt: 2,
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: { xs: "column", md: "row" },
+        }}
+      >
         <Typography variant="h6">Submissions</Typography>
         <Box>
           <Button
@@ -130,7 +144,7 @@ export default function SubmissionsPage() {
 
       {isLoading ? (
         // Skeleton Loading
-        <Table sx={{ mt: 2 }}>
+        <Table sx={{ mt: 2 }} size="small">
           <TableHead>
             <TableRow>
               <TableCell>
@@ -142,9 +156,11 @@ export default function SubmissionsPage() {
               <TableCell>
                 <Skeleton variant="text" width={120} />
               </TableCell>
-              <TableCell>
-                <Skeleton variant="text" width={120} />
-              </TableCell>
+              {!isSmallScreen && (
+                <TableCell>
+                  <Skeleton variant="text" width={120} />
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -159,22 +175,25 @@ export default function SubmissionsPage() {
                 <TableCell>
                   <Skeleton variant="text" width={180} />
                 </TableCell>
-                <TableCell>
-                  <Skeleton variant="rectangular" width={50} height={50} />
-                </TableCell>
+                {!isSmallScreen && (
+                  <TableCell>
+                    <Skeleton variant="rectangular" width={50} height={50} />
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>
         </Table>
       ) : (
         // Actual Data
-        <Table sx={{ mt: 2 }}>
+        <Table sx={{ mt: 2 }} size="small">
           <TableHead>
             <TableRow>
               <TableCell />
               <TableCell>Title</TableCell>
               <TableCell>Category</TableCell>
-              <TableCell>Image</TableCell>
+
+              {!isSmallScreen && <TableCell>Image</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -197,23 +216,32 @@ export default function SubmissionsPage() {
                     <TableCell>
                       {getCategoryChip(submission.category)}
                     </TableCell>
-                    <TableCell>
-                      <img
-                        src={submission.imageUrl}
-                        alt={submission.title}
-                        style={{
-                          width: isOpen ? 120 : 50,
-                          height: isOpen ? 120 : 50,
-                          transition: "all 0.3s ease-in-out",
-                          objectFit: "cover",
-                          borderRadius: 4,
-                        }}
-                      />
-                    </TableCell>
+                    {!isSmallScreen && (
+                      <TableCell>
+                        <img
+                          src={submission.imageUrl}
+                          alt={submission.title}
+                          style={{
+                            width: isOpen ? 120 : 50,
+                            height: isOpen ? 120 : 50,
+                            transition: "all 0.3s ease-in-out",
+                            objectFit: "cover",
+                            borderRadius: 4,
+                          }}
+                        />
+                      </TableCell>
+                    )}
                   </TableRow>
                   <TableRow>
                     <TableCell colSpan={4} style={{ padding: 0 }}>
-                      <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                      <Collapse
+                        in={isOpen}
+                        timeout={250}
+                        unmountOnExit
+                        onEntered={() =>
+                          handleCollapseEntered(submission._id.toString())
+                        }
+                      >
                         <Box
                           sx={{
                             p: 2,
@@ -227,6 +255,28 @@ export default function SubmissionsPage() {
                             {submission.description}
                           </Typography>
                         </Box>
+                        {isSmallScreen && isOpen && (
+                          <Box sx={{ mb: 1 }}>
+                            {loadedImage === submission._id.toString() && (
+                              <img
+                                src={submission.imageUrl}
+                                alt={submission.title}
+                                loading="lazy"
+                                style={{
+                                  width:
+                                    loadedImage === submission._id.toString()
+                                      ? "100%"
+                                      : 50,
+                                  maxWidth: 300,
+                                  height: "auto",
+                                  objectFit: "cover",
+                                  borderRadius: 4,
+                                  transition: "all 0.3s ease-in-out",
+                                }}
+                              />
+                            )}
+                          </Box>
+                        )}
                       </Collapse>
                     </TableCell>
                   </TableRow>
