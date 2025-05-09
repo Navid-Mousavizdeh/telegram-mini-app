@@ -24,10 +24,10 @@ export default function BackgroundWave() {
             paused={false}
             style={{ display: "flex" }}
             options={{
-              height: 10,
-              amplitude: 10,
-              speed: 0.3,
-              points: 4,
+              height: 20,
+              amplitude: 20,
+              speed: 0.15,
+              points: 3,
             }}
           />
         </WaveContainer>

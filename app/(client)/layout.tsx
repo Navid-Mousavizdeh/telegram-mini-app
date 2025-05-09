@@ -6,8 +6,8 @@ import { AuthProvider } from "@/lib/authentication";
 import "@/app/global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WaveLayout } from "@/components/layouts";
+import { ToastProvider } from "@/contexts/useToast";
 
-// Create a new QueryClient instance
 const queryClient = new QueryClient();
 
 export default function WithMuiTheme({
@@ -20,7 +20,9 @@ export default function WithMuiTheme({
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AuthProvider>
-          <WaveLayout>{children}</WaveLayout>
+          <ToastProvider>
+            <WaveLayout>{children}</WaveLayout>
+          </ToastProvider>
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
