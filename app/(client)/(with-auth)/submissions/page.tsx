@@ -1,6 +1,7 @@
 "use client";
 import { useAuth } from "@/lib/authentication";
 import { Submission } from "@/types";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -18,14 +19,11 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";

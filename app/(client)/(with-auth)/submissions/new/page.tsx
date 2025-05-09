@@ -1,24 +1,24 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useAuth } from "@/lib/authentication";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import {
-  Button,
-  TextField,
-  Container,
-  Typography,
   Box,
+  Button,
+  CircularProgress,
+  Container,
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
-  InputLabel,
-  FormControl,
-  CircularProgress,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useAuth } from "@/lib/authentication";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 // Schema validation using Zod
 const schema = z.object({
@@ -34,7 +34,6 @@ export default function NewSubmissionPage() {
   const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   const {
     register,
@@ -47,10 +46,7 @@ export default function NewSubmissionPage() {
   useEffect(() => {
     if (!authLoading) {
       if (!user) {
-        setIsAuthenticated(false);
         router.push("/auth/login");
-      } else {
-        setIsAuthenticated(true);
       }
     }
   }, [authLoading, user, router]);
