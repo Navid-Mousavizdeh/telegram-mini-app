@@ -2,11 +2,10 @@
 
 import { BackgroundWave } from "@/components/shared";
 import { FullFlexBox } from "@/components/shared/styled";
-import { theme } from "@/constants/theme";
 import { fadeInSlideUp } from "@/mixins";
 import { Box, Card } from "@mui/material";
 
-export default function AuthPagesLayout({
+export default function WaveLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

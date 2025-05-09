@@ -2,6 +2,7 @@ import { MongoClient, ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import { Submission, User } from "@/types";
 
 const MONGODB_URI = process.env.MONGODB_URI || "";
 const JWT_SECRET = process.env.JWT_SECRET || "";
@@ -72,6 +73,40 @@ class MongoDatabase {
       { expiresIn: "1d" }
     );
     return token;
+  }
+
+  private getSubmissionsCollection() {
+    return this.client.db(this.dbName).collection<Submission>("submissions");
+  }
+
+  async getSubmissions(user: User): Promise<Submission[]> {
+    const submissions = this.getSubmissionsCollection();
+    if (user.role === "admin") {
+      return submissions.find().toArray();
+    }
+    return submissions.find({ userId: user._id.toString() }).toArray();
+  }
+
+  async getSubmissionById(id: string, user: User): Promise<Submission | null> {
+    const submissions = this.getSubmissionsCollection();
+    return submissions.findOne({
+      _id: new ObjectId(id),
+      ...(user.role !== "admin" ? { userId: user._id.toString() } : {}),
+    });
+  }
+
+  async createSubmission(
+    data: Omit<Submission, "_id" | "userId">,
+    userId: string
+  ): Promise<Submission> {
+    const submissions = this.getSubmissionsCollection();
+    const submission: Submission = {
+      _id: new ObjectId(),
+      userId,
+      ...data,
+    };
+    await submissions.insertOne(submission);
+    return submission;
   }
 
   async close() {
