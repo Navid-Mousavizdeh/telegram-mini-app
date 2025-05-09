@@ -1,9 +1,8 @@
-import React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import Slide from "@mui/material/Slide";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import React from "react";
 
 const StyledGridOverlay = styled("div")(({ theme }) => ({
   display: "flex",
