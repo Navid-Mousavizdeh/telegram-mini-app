@@ -57,9 +57,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         headers: { Authorization: `Bearer ${data.token}` },
       });
       setUser(userData);
-      router.push("/submissions");
+      router.push("/");
     } catch (error) {
       console.error("Login failed", error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -72,6 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await login(username, password);
     } catch (error) {
       console.error("Signup failed", error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
